@@ -15,7 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Textarea } from "../ui/textarea";
 import { usePathname, useRouter } from "next/navigation";
 import { CommentValidation } from '@/lib/validations/thread'
-import { createThread } from "@/lib/actions/thread.actions";
+import { addCommentToThread, createThread } from "@/lib/actions/thread.actions";
 import Image from "next/image";
 interface Props {
     threadId: string,
@@ -34,18 +34,17 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: Props) => {
     });
 
     const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
-        // await createThread({
-        //     text: values.thread,
-        //     author: userId,
-        //     communityId: null,
-        //     path: pathname
-        // })
-        // router.push("/");
+        await addCommentToThread({
+            commentText: values.thread,
+            userId: JSON.parse(currentUserId),
+            threadId: threadId,
+            path: pathname
+        })
+        form.reset();
     }
 
     return (
         <div>
-            <h1 className="text-white">Comment Form</h1>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="comment-form">
                     <FormField

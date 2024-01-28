@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     image: { type: String },
     bio: { type: String },
-    threds: [
+    threads: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Thread'
